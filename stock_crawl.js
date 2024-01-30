@@ -32,29 +32,33 @@ async function fetchPage() {
                 });
 
                 const tableText = $iframe('.type2').find('tr').map((i, el) => {
-                    const date = $(el).find('td:nth-child(1)').text().trim();
-                    const end = $(el).find('td:nth-child(2)').text().trim();
-                    const thanYesterday = $(el).find('td:nth-child(3)').text().trim();
-                    const market = $(el).find('td:nth-child(4)').text().trim();
-                    const highest = $(el).find('td:nth-child(5)').text().trim();
-                    const lowest = $(el).find('td:nth-child(6)').text().trim();
-                    const amount = $(el).find('td:nth-child(7)').text().trim();
-
-                    return {
-                        [titleList[0]]: date,
-                        [titleList[1]]:end,
-                        [titleList[2]]:thanYesterday,
-                        [titleList[3]]:market,
-                        [titleList[4]]:highest,
-                        [titleList[5]]:lowest,
-                        [titleList[6]]:amount
-                    };
-                }).get();
-
-                fs.writeFileSync('./stock_crawl.json', JSON.stringify(tableText));
+                const date = $(el).find('td:nth-child(1)').text().trim();
+                const end = $(el).find('td:nth-child(2)').text().trim();
+                const thanYesterday = $(el).find('td:nth-child(3)').text().trim();
+                const market = $(el).find('td:nth-child(4)').text().trim();
+                const highest = $(el).find('td:nth-child(5)').text().trim();
+                const lowest = $(el).find('td:nth-child(6)').text().trim();
+                const amount = $(el).find('td:nth-child(7)').text().trim();
 
                 return {
-                    tableText
+                    [titleList[0]]:date,
+                    [titleList[1]]:end,
+                    [titleList[2]]:thanYesterday,
+                    [titleList[3]]:market,
+                    [titleList[4]]:highest,
+                    [titleList[5]]:lowest,
+                    [titleList[6]]:amount
+                };
+            }).get();
+
+                const result=tableText.filter((elem, idx)=>{
+                    return elem[titleList[0]];
+                })
+
+                fs.writeFileSync('./stock_crawl.json', JSON.stringify(result));
+
+                return {
+                    result
                 };
             }
         }).get());
